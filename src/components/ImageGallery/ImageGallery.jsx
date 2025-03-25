@@ -1,7 +1,7 @@
 import ImageCard from "../ImageCard/ImageCard";
 import css from "./ImageGallery.module.css"
 
-export default function ImageGallery({ items }) {
+export default function ImageGallery({ items, changeImgValue, openModal }) {
   return (
     <ul className={css.list}>
       {items.map((item) => (
@@ -11,6 +11,8 @@ export default function ImageGallery({ items }) {
             small={item.urls.raw}
             regular={item.urls.regular}
             user={item.user}
+            changeImgValue={changeImgValue}
+            openModal={openModal}
           />
         </li>
       ))}
