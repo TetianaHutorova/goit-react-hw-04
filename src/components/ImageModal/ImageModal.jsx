@@ -28,7 +28,7 @@ export default function ImageModal({ isOpen, closeModal, imageModal }) {
       contentLabel="Example Modal"
     >
       <div>
-        <img className={css.img} src={imageModal.dataset.regular}  />
+        <img className={css.img} src={imageModal}  />
       </div>
     </Modal>
   );

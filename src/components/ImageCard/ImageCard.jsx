@@ -1,6 +1,6 @@
 import css from "./ImageCard.module.css";
 export default function ImageCard({ id, small, regular, user, changeImgValue, openModal }) {
-  const handlerImgClick = (e) => changeImgValue(e.target);
+  const handlerImgClick = (e) => changeImgValue(e.target.dataset.regular);
 
   return (
     <div

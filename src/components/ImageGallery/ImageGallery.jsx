@@ -8,7 +8,7 @@ export default function ImageGallery({ items, changeImgValue, openModal }) {
         <li key={item.id}>
           <ImageCard
             id={item.id}
-            small={item.urls.raw}
+            small={item.urls.small}
             regular={item.urls.regular}
             user={item.user}
             changeImgValue={changeImgValue}
