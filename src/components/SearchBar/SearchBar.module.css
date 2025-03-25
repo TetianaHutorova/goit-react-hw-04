@@ -1,0 +1,19 @@
+.header {
+  background-color: rgb(7, 7, 66);
+  width: 100vw;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn {
+  height: 40px;
+  width: 100px;
+}
+.form{
+    display: flex;
+    gap: 24px;
+}
+.input{
+    border-radius: 8px;
+}
