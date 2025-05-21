@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import SearchBar from "./components/SearchBar/SearchBar";
 import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
-
+ 
 import ImageModal from "./components/ImageModal/ImageModal";
 
 import { fetchFotos } from "./imageService";
