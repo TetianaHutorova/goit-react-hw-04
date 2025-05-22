@@ -1,7 +1,13 @@
 import ReactModal from "react-modal";
 import css from "./ImageModal.module.css";
-import { Image } from "../../image";
+import { Params } from "../../image";
+import { FC } from "react";
 
+interface ImageModalProps {
+  modalParams: Params;
+  onClose: () => void;
+}
+ 
 const customStyles = {
   content: {
     top: "50%",
@@ -17,31 +23,23 @@ const customStyles = {
   },
 };
 
-type ImageModalProps = {
-  isOpen: boolean;
-  closeModal: () => void;
-  imageModal: Image | null;
-};
-
-const ImageModal: React.FC<ImageModalProps> = ({
-  isOpen,
-  closeModal,
-  imageModal,
-}) => {
+const ImageModal: FC<ImageModalProps> = ({modalParams, onClose}) => {
   return (
     <ReactModal
-      isOpen={isOpen}
-      onRequestClose={closeModal}
       style={customStyles}
-      contentLabel="Image Modal"
+      overlayClassName={css.backdrop}
+      isOpen={modalParams.isOpen}
+      shouldCloseOnEsc={true} 
+      shouldCloseOnOverlayClick={true}
+      ariaHideApp={false}
+      onRequestClose={onClose}
     >
-      <div>
-        {imageModal ? (
-          <img className={css.img} src={imageModal} alt="Modal content" />
-        ) : (
-          <p>No image available</p>
-        )}
-      </div>
+      <img
+        className={css.img}
+        src={modalParams.url}
+        alt={modalParams.alt}
+        width="100%"
+      />
     </ReactModal>
   );
 };

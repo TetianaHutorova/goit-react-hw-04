@@ -2,26 +2,24 @@ import { useState, useEffect } from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-
 import ImageModal from "../ImageModal/ImageModal";
-
 import fetchFotos from "../../imageService";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import LoadmoreBtn from "../LoadMoreBtn/LoadMoreBtn";
-import { Params, Image, Photos } from "../../image";
+import { Image, Params, Photos } from "../../image";
 
 export default function App() {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [galleryArr, setGalleryArr] = useState<Image[]>([]);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<boolean | string>(false);
   const [page, setPage] = useState<number>(1);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [imageModal, setImageModal] = useState<Image | null>(null);
-
-  const changeImgValue = (newValue: Image | null): void => {
-    setImageModal(newValue);
-  };
+  const [loadMore, setloadMore] = useState<boolean>(false);
+  const [galleryArr, setGalleryArr] = useState<Image[]>([]);
+  const [modalParams, setModalParams] = useState<Params>({
+    isOpen: false,
+    url: "",
+    alt: "",
+  });
 
   function onSubmit(topic: string): void {
     setSearchValue(topic);
@@ -29,13 +27,23 @@ export default function App() {
     setGalleryArr([]);
   }
 
-  const handleLoadMoreClick = () => setPage(page + 1);
-
-  function openModal() {
-    setIsOpen(true);
+  function handleLoadMoreClick(): void {
+    setPage(page + 1);
   }
+
+  function openModal(image: Image) {
+    if (modalParams.isOpen) {
+      return;
+    }
+    setModalParams({
+      isOpen: true,
+      url: image.urls.regular,
+      alt: image.alt_description,
+    });
+  }
+
   function closeModal(): void {
-    setIsOpen(false);
+    setModalParams({ isOpen: false, url: "", alt: "" });
   }
 
   useEffect(() => {
@@ -43,16 +51,19 @@ export default function App() {
       return;
     }
 
-    async function getData(): Promise<void> {
+    async function getData() {
       try {
         setError(false);
         setIsLoading(true);
-
-        const { results }: Photos = await fetchFotos(searchValue, page);
-
-        setGalleryArr((prevGalleryArr) => {
-          return [...prevGalleryArr, ...results];
-        });
+        const { results, totalPages }: Photos = await fetchFotos(
+          searchValue,
+          page
+        );
+        if (results.length === 0) {
+          setError("No images were found that match your query");
+        }
+        setGalleryArr((prevImages) => [...prevImages, ...results]);
+        setloadMore(totalPages > 1 && page !== totalPages);
       } catch {
         setError(true);
       } finally {
@@ -65,23 +76,17 @@ export default function App() {
 
   return (
     <div>
-         <ImageModal
-          isOpen={isOpen}
-          closeModal={closeModal}
-          imageModal={imageModal}
-        />
-       <SearchBar onSubmit={onSubmit} />
+      <SearchBar onSubmit={onSubmit} />
       {error && <ErrorMessage />}
       {galleryArr.length > 0 && (
-        <ImageGallery
-          changeImgValue={changeImgValue}
-          items={galleryArr}
-          openModal={openModal}
-        />
+        <ImageGallery items={galleryArr} openModal={openModal} />
       )}
       {isLoading && <Loader />}
-      {!isLoading && galleryArr.length > 0 && (
+      {!isLoading && galleryArr.length > 0 && loadMore && (
         <LoadmoreBtn handleLoadMoreClick={handleLoadMoreClick} />
+      )}
+      {modalParams.isOpen && (
+        <ImageModal modalParams={modalParams} onClose={closeModal} />
       )}
     </div>
   );

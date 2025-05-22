@@ -7,7 +7,7 @@ export default function Loader() {
        <ClipLoader
         color="#000000"
         loading={true}
-        size={50}
+        size={50} 
         aria-label="Loading Spinner"
         data-testid="loader"
       />

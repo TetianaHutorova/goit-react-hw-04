@@ -1,29 +1,22 @@
 import ImageCard from "../ImageCard/ImageCard";
-import css from "./ImageGallery.module.css";
+import css from "./ImageGallery.module.css"
 import { Image } from "../../image";
 
-type ImageGalleryProps = {
+interface ImageGalleryProps {
   items: Image[];
-  changeImgValue: (value: string) => void;
-  openModal: () => void;
-};
+  openModal: (image: Image) => void;
+}
 
-const ImageGallery: React.FC<ImageGalleryProps> = ({
-  items,
-  changeImgValue,
-  openModal,
-}) => {
+const ImageGallery: React.FC<ImageGalleryProps> = ({ items, openModal }) => {
   return (
     <ul className={css.list}>
-      {items.map((item) => (
-        <li key={item.id}>
-          <ImageCard
-            image={item}
-            changeImgValue={changeImgValue}
-            openModal={openModal}
-          />
-        </li>
-      ))}
+      {items.map((item) => {
+        return (
+          <li key={item.id}>
+            <ImageCard image={item} onClick={() => openModal(item)} />
+          </li>
+        );
+      })}
     </ul>
   );
 };
