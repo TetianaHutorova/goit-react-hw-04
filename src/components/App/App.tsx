@@ -65,14 +65,12 @@ export default function App() {
 
   return (
     <div>
-      {isOpen && (
-        <ImageModal
+         <ImageModal
           isOpen={isOpen}
           closeModal={closeModal}
           imageModal={imageModal}
         />
-      )}
-      <SearchBar onSubmit={onSubmit} />
+       <SearchBar onSubmit={onSubmit} />
       {error && <ErrorMessage />}
       {galleryArr.length > 0 && (
         <ImageGallery

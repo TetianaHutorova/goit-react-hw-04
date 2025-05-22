@@ -1,5 +1,6 @@
-import Modal from "react-modal";
+import ReactModal from "react-modal";
 import css from "./ImageModal.module.css";
+import { Image } from "../../image";
 
 const customStyles = {
   content: {
@@ -16,12 +17,10 @@ const customStyles = {
   },
 };
 
-Modal.setAppElement("#root");
-
 type ImageModalProps = {
   isOpen: boolean;
   closeModal: () => void;
-  imageModal: string | null;
+  imageModal: Image | null;
 };
 
 const ImageModal: React.FC<ImageModalProps> = ({
@@ -30,7 +29,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
   imageModal,
 }) => {
   return (
-    <Modal
+    <ReactModal
       isOpen={isOpen}
       onRequestClose={closeModal}
       style={customStyles}
@@ -43,7 +42,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
           <p>No image available</p>
         )}
       </div>
-    </Modal>
+    </ReactModal>
   );
 };
 
