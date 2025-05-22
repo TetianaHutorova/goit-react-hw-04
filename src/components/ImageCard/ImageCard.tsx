@@ -1,21 +1,40 @@
+import { FC, MouseEvent } from "react";
 import css from "./ImageCard.module.css";
-export default function ImageCard({ id, small, regular, user, changeImgValue, openModal }) {
-  const handlerImgClick = (e) => changeImgValue(e.target.dataset.regular);
+import { Image } from "../../image";
+
+type ImageCardProps = {
+  image: Image;
+  changeImgValue: (value: string) => void;
+  openModal: () => void;
+};
+
+const ImageCard: FC<ImageCardProps> = ({
+  image,
+  changeImgValue,
+  openModal,
+}) => {
+  const { id, urls, user } = image;
+
+  const handlerImgClick = (regular: string): void => {
+    changeImgValue(regular);
+  };
+
+  const handleClick = (e: MouseEvent<HTMLDivElement>): void => {
+    handlerImgClick(urls.regular);
+    openModal();
+  };
 
   return (
-    <div
-      onClick={(e) => {
-        handlerImgClick(e); 
-        openModal();
-      }}
-    >
+    <div onClick={handleClick}>
       <img
         className={css.img}
-        src={small}
-        alt={`Photo by ${user}`}
+        src={urls.small}
+        alt={`Photo by ${user.name}`}
         data-id={id}
-        data-regular={regular}
+        data-regular={urls.regular}
       />
     </div>
   );
-}
+};
+
+export default ImageCard;
